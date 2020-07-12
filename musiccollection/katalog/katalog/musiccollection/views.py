@@ -41,4 +41,4 @@ class UpdateAlbum(UpdateView):
 
 
 class DeleteAlbum(DeleteView):
-    pass 
+    pass

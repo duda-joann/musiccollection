@@ -19,27 +19,28 @@ class Album(models.Model):
     FOUR = 4
     FIVE = 5
 
-    RATING_CHOICES = {
+    RATING_CHOICES = [
         (ONE, "★"),
         (TWO, "★★"),
         (THREE, "★★★"),
         (FOUR, "★★★★"),
-        (FIVE, "★★★★★")}
+        (FIVE, "★★★★★"),
+    ]
 
     title = models.CharField(max_length=100)
     band = models.OneToOneField('Artist', related_name='+', on_delete=models.CASCADE, default=0)
     the_year_of_publishment = models.DateTimeField(null=True, blank=True)
-    cover = models.ImageField(upload_to='album/covers', max_length=500, null=True, blank=True)
+    cover = models.ImageField(null=True, blank=True)
     ean = models.CharField(max_length=100, unique=True, null=True, blank=True)
     kat_nr = models.CharField(max_length = 100, null=True, blank=True)
     country_of_issued_of_album = models.CharField(max_length=100, null=True, blank=True)
     created = models.DateTimeField(default=timezone.now)
     description = models.CharField(max_length=500, null=True, blank=True)
-    rating = models.CharField(max_length=10, default=5, choices=RATING_CHOICES)
+    rating = models.PositiveSmallIntegerField(default=5, choices=RATING_CHOICES)
     genre = models.ManyToManyField(Genre)
 
     def format(self):
-        return f'{str(self.title)} + " " + ({str(self.the_year_of_publishment)})'
+        return f'{str(self.title)} ({str(self.the_year_of_publishment)})'
 
     def __str__(self):
         return self.format()
@@ -58,7 +59,7 @@ class Artist(models.Model):
     album = models.ManyToManyField(Album, blank=True)
 
     def format(self):
-        return f'{str(self.name)}({str(self.country_of_origin)})'
+        return f'{str(self.name)} + ({str(self.country_of_origin)})'
 
     def __str__(self):
         return self.format()

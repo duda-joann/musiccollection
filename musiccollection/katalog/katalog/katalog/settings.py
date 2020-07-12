@@ -55,7 +55,7 @@ ROOT_URLCONF = 'katalog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,5 +120,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ['static']
-MEDIA = '/album/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = 'album'

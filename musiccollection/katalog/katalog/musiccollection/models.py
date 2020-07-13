@@ -12,6 +12,18 @@ class Genre(models.Model):
         return f'{str(self.genre)}'
 
 
+class MusicLabel(models.Model):
+    music_label = models.CharField(max_length=200, default = "Warner Bros Music")
+    country = models.CharField(max_length=100, blank=True, null=True)
+    foundation_year = models.DateField(blank = True, null=True)
+
+    def format(self):
+        return f'{str(self.music_label)}({self.country}'
+
+    def __str__(self):
+        return self.format()
+
+
 class Album(models.Model):
     ONE = 1
     TWO = 2
@@ -38,9 +50,11 @@ class Album(models.Model):
     description = models.CharField(max_length=500, null=True, blank=True)
     rating = models.PositiveSmallIntegerField(default=5, choices=RATING_CHOICES)
     genre = models.ManyToManyField(Genre)
+    musiclabel = models.ManyToManyField(MusicLabel)
+    slug = models.SlugField(max_length=30)
 
     def format(self):
-        return f'{str(self.title)} ({str(self.the_year_of_publishment)})'
+        return f'{str(self.title)} ({str(self.band)})'
 
     def __str__(self):
         return self.format()
@@ -57,6 +71,9 @@ class Artist(models.Model):
     foundation_year = models.DateTimeField()
     genre = models.ManyToManyField(Genre)
     album = models.ManyToManyField(Album, blank=True)
+    biography = models.CharField(max_length=1000, blank=True, null=True)
+    photography = models.ImageField(blank=True, null=True)
+    slug = models.SlugField(max_length=30)
 
     def format(self):
         return f'{str(self.name)} + ({str(self.country_of_origin)})'
@@ -68,20 +85,11 @@ class Artist(models.Model):
         unique_together = ['name', 'country_of_origin']
 
 
-class MusicLabel(models.Model):
-    music_label = models.ManyToManyField(Album)
-
-    def format(self):
-        return f'{str(self.music_label)}'
-
-    def __str__(self):
-        return self.format()
-
-
 class MyCollection(models.Model):
     owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     album = models.ManyToManyField(Album)
     add_date = models.DateTimeField(default=timezone.now)
+    slug = models.SlugField(max_length=30)
 
     def format(self):
         return f'{str(self.owner)}, {str(self.album)}'

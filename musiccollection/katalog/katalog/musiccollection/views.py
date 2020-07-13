@@ -1,8 +1,6 @@
-from django.shortcuts import render
-from django.views.generic import ListView, FormView, TemplateView, DeleteView, UpdateView
+from django.views.generic import ListView, FormView, TemplateView, DeleteView, UpdateView, DetailView
 from .models import Album, Artist, MusicLabel, Genre
 from .forms import FormAlbum, FormArtist
-from .managers import GenreManager
 # Create your views here.
 
 
@@ -16,6 +14,14 @@ class AlbumListView(ListView):
     context_object_name = 'album'
     paginate_by = 10
     ordering = ['-created']
+
+
+class ArtistListView(ListView):
+    template_name = 'all_artist.html'
+    model = Artist
+    context_object_name = 'artist'
+    paginate_by = 10
+    ordering = ['name']
 
 
 class FormAlbumView(FormView):
@@ -37,8 +43,14 @@ class ArtistView(FormView):
 
 
 class UpdateAlbum(UpdateView):
-    pass
+    form_class = FormAlbum
+    model = Album
+    template_name = 'update.html'
+    success_url = '/albums/'
 
 
 class DeleteAlbum(DeleteView):
-    pass
+    model = Album
+    template_name = "delete.html"
+    success_url = '/albums/'
+

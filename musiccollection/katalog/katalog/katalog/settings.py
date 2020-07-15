@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'musiccollection.apps.MusiccollectionConfig',
+    'blog.apps.BlogConfig',
     'rest_framework',
 ]
 

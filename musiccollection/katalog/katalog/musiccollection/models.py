@@ -7,6 +7,7 @@ from django.utils import timezone
 
 class Genre(models.Model):
     genre = models.CharField(max_length=200, blank=True, null=True)
+    slug = models.SlugField(max_length=30, null=True, blank=True)
 
     def __str__(self):
         return f'{str(self.genre)}'
@@ -16,6 +17,7 @@ class MusicLabel(models.Model):
     music_label = models.CharField(max_length=200, default = "Warner Bros Music")
     country = models.CharField(max_length=100, blank=True, null=True)
     foundation_year = models.DateField(blank = True, null=True)
+    slug = models.SlugField(max_length=30, blank=True, null=True)
 
     def format(self):
         return f'{str(self.music_label)}({self.country}'
@@ -51,10 +53,10 @@ class Album(models.Model):
     rating = models.PositiveSmallIntegerField(default=5, choices=RATING_CHOICES)
     genre = models.ManyToManyField(Genre)
     musiclabel = models.ManyToManyField(MusicLabel)
-    slug = models.SlugField(max_length=30)
+    slug = models.SlugField(max_length=30, null= True, blank = True)
 
     def format(self):
-        return f'{str(self.title)} ({str(self.band)})'
+        return f'{str(self.title)}'
 
     def __str__(self):
         return self.format()
@@ -73,7 +75,7 @@ class Artist(models.Model):
     album = models.ManyToManyField(Album, blank=True)
     biography = models.CharField(max_length=1000, blank=True, null=True)
     photography = models.ImageField(blank=True, null=True)
-    slug = models.SlugField(max_length=30)
+    slug = models.SlugField(max_length=30, null=True, blank=True)
 
     def format(self):
         return f'{str(self.name)} + ({str(self.country_of_origin)})'
@@ -89,7 +91,7 @@ class MyCollection(models.Model):
     owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     album = models.ManyToManyField(Album)
     add_date = models.DateTimeField(default=timezone.now)
-    slug = models.SlugField(max_length=30)
+    slug = models.SlugField(max_length=30, null=True, blank=True)
 
     def format(self):
         return f'{str(self.owner)}, {str(self.album)}'

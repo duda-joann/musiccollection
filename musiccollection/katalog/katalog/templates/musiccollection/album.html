@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% for album in albums %}
+{{ album }}
+<a href = "{% url 'musiccollection:update' title=album.title %}">Update</a>
+<a href = "{% url 'musiccollection:delete' title=album.title %}">Delete</a>
+<a href = "{% url 'musiccollection:addfav' album=album.title %}">Add to my  collection</a>
+
+{% endfor %}
+{% endblock %}

@@ -1,17 +1,17 @@
-from django.views.generic import ListView, FormView, TemplateView, DeleteView, UpdateView, DetailView
+from django.views.generic import ListView, FormView, TemplateView, DeleteView, UpdateView, CreateView
 from .models import Album, Artist, MusicLabel, Genre
-from .forms import FormAlbum, FormArtist
+from .forms import FormAlbum, FormArtist, FormMyCollection
 # Create your views here.
 
 
 class ThanksView(TemplateView):
-    template_name = 'thanks.html'
+    template_name = 'musiccollection/thanks.html'
 
 
 class AlbumListView(ListView):
-    template_name = 'album.html'
+    template_name = 'musiccollection/album.html'
     model = Album
-    context_object_name = 'album'
+    context_object_name = 'albums'
     paginate_by = 10
     ordering = ['-created']
 
@@ -25,7 +25,7 @@ class ArtistListView(ListView):
 
 
 class FormAlbumView(FormView):
-    template_name = 'add_new.html'
+    template_name = 'musiccollection/add_new.html'
     form_class = FormAlbum
     success_url = '/thanks/'
 
@@ -34,7 +34,7 @@ class FormAlbumView(FormView):
 
 
 class ArtistView(FormView):
-    template_name = 'artist_new.html'
+    template_name = 'musiccolecction/artist_new.html'
     form_class = FormArtist
     success_url = '/thanks/'
 
@@ -44,13 +44,34 @@ class ArtistView(FormView):
 
 class UpdateAlbum(UpdateView):
     form_class = FormAlbum
-    model = Album
-    template_name = 'update.html'
+    template_name = 'musiccollection/update.html'
     success_url = '/albums/'
+
+    def get_object(self, queryset=None):
+        object_to_update = Album.objects.get(title=self.kwargs['title'])
+        return object_to_update
 
 
 class DeleteAlbum(DeleteView):
     model = Album
-    template_name = "delete.html"
+    template_name = "musiccollection/delete.html"
     success_url = '/albums/'
+
+    def get_object(self, queryset=None):
+        object_to_update = Album.objects.get(title=self.kwargs['title'])
+        return object_to_update
+
+
+class OwnAlbumsView(CreateView):
+    template_name = 'musiccollection/add_to_fav.html'
+    form_class = FormMyCollection
+    success_url = '/albums/'
+
+    def get_object(self, queryset=None):
+        object_to_save = Album.objects.get(title=self.kwargs['title'])
+        return object_to_save
+
+    def save(self):
+        album = self.get_object()
+        FormMyCollection.save(album)
 

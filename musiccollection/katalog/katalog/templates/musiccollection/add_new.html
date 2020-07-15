@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %} Change album... {% endblock %}
+{% block title %} Add new... {% endblock %}
 
 {% block body %}
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type=submit" value="Submit">
+    <input type="submit" value="Submit">
 </form>
 
 {% endblock %}

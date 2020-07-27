@@ -4,6 +4,10 @@ from .forms import FormAlbum, FormArtist, FormMyCollection
 # Create your views here.
 
 
+class MainPage(TemplateView):
+    template_name = 'musiccollection/main.html'
+
+
 class ThanksView(TemplateView):
     template_name = 'musiccollection/thanks.html'
 

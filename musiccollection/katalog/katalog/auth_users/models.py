@@ -1,29 +1,30 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
 
-class DefaultUser(AbstractUser):
-    is_admin = models.BooleanField(default=False)
-    is_moderator = models.BooleanField(default=False)
-    is_user = models.BooleanField(default=True)
-
-
-class User(models.Model):
+class Profile(models.Model):
     GENDER = {
         ('M', 'Man'),
         ('W', 'Woman'),
         ('N', 'Refusal to response'),
 
     }
-    login = models.OneToOneField(DefaultUser, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=80, blank=True, null = True)
-    email = models.EmailField(max_length=100)
-    gender = models.CharField(choices=GENDER)
 
-    def __str__(self):
-        return str(self.login)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=30, blank=True, null = True,  help_text='Optional.')
+    last_name = models.CharField(max_length=30, blank=True, null = True, help_text='Optional.')
+    email = models.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+    gender = models.CharField(choices=GENDER, max_length=10)
+
+    @receiver(post_save, sender=User)
+    def update_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+        instance.profile.save()
 
 
 

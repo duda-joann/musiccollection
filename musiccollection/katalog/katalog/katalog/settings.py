@@ -37,8 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'musiccollection.apps.MusiccollectionConfig',
     'blog.apps.BlogConfig',
+    'auth_users.apps.AuthUsersConfig',
     'rest_framework',
 ]
 
@@ -124,3 +129,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = ['static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'album'
+SITE_ID = 1

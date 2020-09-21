@@ -130,3 +130,5 @@ STATICFILES_DIRS = ['static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'album'
 SITE_ID = 1
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'musiccollection:albums'

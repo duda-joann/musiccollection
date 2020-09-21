@@ -15,3 +15,4 @@ def signup(request):
     else:
         form = UserRegistration()
     return render(request, 'auth/signup.html', {'form': form})
+

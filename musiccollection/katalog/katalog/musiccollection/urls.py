@@ -1,16 +1,26 @@
 from django.urls import path
-from .views import AlbumListView, FormAlbumView, ArtistView, ThanksView, UpdateAlbum, DeleteAlbum, OwnAlbumsView
-
+from .views import (AlbumListView,
+                    FormAlbumView,
+                    ArtistView,
+                    ThanksView,
+                    UpdateAlbum,
+                    DeleteAlbum,
+                    add_to_own_albums,
+                    remove_from_my_collections,
+                    CollectionListView)
 
 
 app_name = 'musiccollection'
 
 urlpatterns = [
-    path('albums/', AlbumListView.as_view(), name="albums"),
+    path('album/<slug>', AlbumListView.as_view(), name="album"),
     path('addnew/', FormAlbumView.as_view(), name="new"),
     path('newartist/', ArtistView.as_view(), name="newartist"),
     path('thanks/', ThanksView.as_view(), name="thanks"),
-    path('update/<title>', UpdateAlbum.as_view(), name="update"),
-    path('delete/<title>', DeleteAlbum.as_view(), name="delete"),
-    path('addtomycollection/<album>', OwnAlbumsView.as_view(), name = "addfav")
+    path('update/<slug>', UpdateAlbum.as_view(), name="update"),
+    path('delete/<slug>', DeleteAlbum.as_view(), name="delete"),
+    path('my-collection', CollectionListView.as_view(), name ="Collection"),
+    path('add-to-my-collection/<slug>', add_to_own_albums, name = "add-to-my-collection"),
+    path('remove-from-my-collection/<slug>', remove_from_my_collections, name="remove-from-my-collection")
+
 ]

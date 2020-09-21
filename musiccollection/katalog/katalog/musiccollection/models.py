@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import reverse
 from django.utils import timezone
 
 # Create your models here.
@@ -76,6 +77,15 @@ class Artist(models.Model):
     biography = models.CharField(max_length=1000, blank=True, null=True)
     photography = models.ImageField(blank=True, null=True)
     slug = models.SlugField(max_length=30, null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse("musiccollection:album", kwargs={'slug': self.slug})
+
+    def get_add_to_favourite_url(self):
+        return reverse("musiccollection:add-to-my-collection", kwargs={'slug': self.slug} )
+
+    def get_remove_from_favourite_url(self):
+        return reverse("core:remove-from-my-my-collection", kwargs={'slug': self.slug})
 
     def format(self):
         return f'{str(self.name)} + ({str(self.country_of_origin)})'

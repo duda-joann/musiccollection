@@ -9,3 +9,5 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 
     fields = ['name', 'country_of_origin', 'genre', 'foundation_year',
               'genre', 'album', 'biography', 'photography']
+
+
